@@ -65,13 +65,15 @@ function TodoItem({
         {!todo.isDone && (
           <Button onClick={() => handleUpdateTodo(todo)}>編輯</Button>
         )}
-        <Button
-          onClick={() => {
-            handleToggleIsDone(todo.id);
-          }}
-        >
-          {todo.isDone ? "未完成" : "已完成"}
-        </Button>
+        {!todo.isEditing && (
+          <Button
+            onClick={() => {
+              handleToggleIsDone(todo.id);
+            }}
+          >
+            {todo.isDone ? "未完成" : "已完成"}
+          </Button>
+        )}
         <Button onClick={() => handleDeleteTodo(todo.id)}>刪除</Button>
       </TodoButtonWrapper>
     </TodoItemWrapper>
