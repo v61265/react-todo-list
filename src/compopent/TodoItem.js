@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const TodoItemWrapper = styled.div`
   margin: 0 auto;
@@ -79,5 +80,19 @@ function TodoItem({
     </TodoItemWrapper>
   );
 }
+
+TodoItem.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.number,
+    content: PropTypes.string,
+    isDone: PropTypes.bool,
+    isEditing: PropTypes.bool,
+  }),
+  handleDeleteTodo: PropTypes.func,
+  handleToggleIsDone: PropTypes.func,
+  handleDeleteAll: PropTypes.func,
+  handleUpdateTodo: PropTypes.func,
+  handleEditChange: PropTypes.func,
+};
 
 export default TodoItem;

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import "./App.css";
-import TodoItem from "./TodoItem";
-import { useState } from "react";
+import TodoItem from "./compopent/TodoItem";
+import useTodos from "./hooks/useTodos";
+import PropTypes from "prop-types";
 
 const Container = styled.div`
   background: rgba(246, 217, 152, 0.7);
@@ -56,84 +57,22 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-// 因為每次 render 都重新呼叫一次 App ，因此不能放裡面。
-// 也不用設定成 state ，因為 id 不用 render 。
-let id = 3;
-
 function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, content: "寫履歷", isDone: true, isEditing: false },
-    { id: 2, content: "送出履歷！", isDone: false, isEditing: false },
-  ]);
-  const [filter, setFilter] = useState("all");
-  const [value, setValue] = useState("");
-
-  const handleInputChange = (e) => {
-    setValue(e.target.value);
-  };
-
-  function handleAddTodo() {
-    if (!value) return alert("請輸入內容～");
-    setTodos([
-      {
-        id,
-        content: value,
-        isDone: false,
-        isEditing: false,
-      },
-      ...todos,
-    ]);
-    setValue("");
-    id++;
-  }
-
-  const handleDeleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  const handleToggleIsDone = (id) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          isDone: !todo.isDone,
-        };
-      })
-    );
-  };
-
-  const handleDeleteAll = () => {
-    setTodos([]);
-  };
-
-  const renderAll = () => setFilter("all");
-  const renderDone = () => setFilter("done");
-  const renderUndone = () => setFilter("undone");
-
-  const handleUpdateTodo = (todo, e) => {
-    setTodos(
-      todos.map((item) => {
-        if (item.id !== todo.id) return item;
-        return {
-          ...item,
-          isEditing: !item.isEditing,
-        };
-      })
-    );
-  };
-
-  const handleEditChange = (id, e) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          content: e.target.value,
-        };
-      })
-    );
-  };
+  const {
+    todos,
+    handleAddTodo,
+    handleDeleteTodo,
+    handleToggleIsDone,
+    handleDeleteAll,
+    renderAll,
+    renderDone,
+    renderUndone,
+    handleUpdateTodo,
+    handleEditChange,
+    filter,
+    handleChange,
+    value,
+  } = useTodos();
 
   return (
     <Container>
@@ -142,7 +81,7 @@ function App() {
         type='text'
         placeholder='todo'
         value={value}
-        onChange={handleInputChange}
+        onChange={handleChange}
       />
       <button className='addTodo' onClick={handleAddTodo}>
         Add todo
@@ -176,5 +115,21 @@ function App() {
     </Container>
   );
 }
+
+App.propTypes = {
+  todos: PropTypes.array,
+  handleAddTodo: PropTypes.func,
+  handleDeleteTodo: PropTypes.func,
+  handleToggleIsDone: PropTypes.func,
+  handleDeleteAll: PropTypes.func,
+  renderAll: PropTypes.func,
+  renderDone: PropTypes.func,
+  renderUndone: PropTypes.func,
+  handleUpdateTodo: PropTypes.func,
+  handleEditChange: PropTypes.func,
+  filter: PropTypes.string,
+  handleChange: PropTypes.func,
+  value: PropTypes.string,
+};
 
 export default App;
