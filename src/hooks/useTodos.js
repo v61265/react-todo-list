@@ -11,11 +11,8 @@ export default function useTodos() {
   const id = useRef(1);
 
   const [todos, setTodos] = useState(() => {
-    let temp = window.localStorage.getItem("todos") || [
-      { id: 2, content: "送出履歷", isDone: false, isEditing: false },
-      { id: 1, content: "寫履歷", isDone: true, isEditing: false },
-    ];
-    console.log("hi");
+    let temp = window.localStorage.getItem("todos") || "[{"id":2,"content":"送出履歷","isDone":false,"isEditing":false},{"id":1,"content":"寫履歷","isDone":true,"isEditing":false}]";
+    console.log(temp);
     const todoData = JSON.parse(temp);
     id.current = todoData[0] ? todoData[0].id + 1 : 1;
 
